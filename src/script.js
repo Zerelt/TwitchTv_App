@@ -4,16 +4,6 @@ arr = ["freecodecamp", "storbeck", "terakilobyte", "habathcx", "RobotCaleb", "th
 
 $(document).ready(function() {
 
-  //loop using JSONP (adding this "?callback=?" makes it JSONP) to check if the streamer name exists or not;without using JSONP and using just JSON, it wouldn't return the key values;
-  for (var i = 0; i < arr.length; i++) {
-    $.getJSON("https://api.twitch.tv/kraken/channels/" + arr[i] + "?client_id=bce27voby5n5fextha9zj04b41ljppd&callback=?", function(json) {
-      if (json.message !== undefined) {
-        $("#offlineDiv").append("<img src ="+"./images/offline.png"+">"+"<div class='offlineInfo'>"+json.message +"</div>"+ "<br />");
-        //alternative for the error picture:https://cdn1.iconfinder.com/data/icons/toolbar-signs/512/no-512.png (red color)
-      }
-    });
-  }
-
   //loop to check if streamer is live or not(note that this time there's no need for JSONP; it returns the values with JSON like normal, altough i could have let just one for loop, i made 2 of them to remember about JSONP)
   for (var j = 0; j < arr.length; j++) {
     $.getJSON("https://api.twitch.tv/kraken/streams/" + arr[j]+'?client_id=bce27voby5n5fextha9zj04b41ljppd&callback=?', function(json2) {
@@ -40,27 +30,32 @@ $(document).ready(function() {
       }
     });
   }
+
+  //loop using JSONP (adding this "?callback=?" makes it JSONP) to check if the streamer name exists or not;without using JSONP and using just JSON, it wouldn't return the key values;
+  for (var i = 0; i < arr.length; i++) {
+    $.getJSON("https://api.twitch.tv/kraken/channels/" + arr[i] + "?client_id=bce27voby5n5fextha9zj04b41ljppd&callback=?", function(json) {
+      if (json.message !== undefined) {
+        $("#offlineDiv").append("<img src ="+"./images/offline.png"+">"+"<div class='offlineInfo'>"+json.message +"</div>"+ "<br />");
+        //alternative for the error picture:https://cdn1.iconfinder.com/data/icons/toolbar-signs/512/no-512.png (red color)
+      }
+    });
+  }
+
   $("#offlineDiv").toggle();
   $("#button").click(function () {
-//    if($("#button").html()=="-") {
-//      $("#button").html("+");
-//    } else {
-//      $("#button").html("-");
-//    }
-    
     if($("#button2").html()=="+" && $("#button").html()=="-"){
       $("#offlineDiv").slideToggle();
       $("#onlineDiv").slideToggle();
       $("#button").html("+");
       $("#button2").html("-");
-    } 
+    }
     else if($("#button2").html()=="-" && $("#button").html()=="+") {
       $("#onlineDiv").slideToggle();
       $("#offlineDiv").slideToggle();
       $("#button").html("-");
       $("#button2").html("+");
     }
-    
+
   });
 
   $("#button2").click(function () {
@@ -69,14 +64,14 @@ $(document).ready(function() {
       $("#onlineDiv").slideToggle();
       $("#button2").html("+");
       $("#button").html("-");
-    } 
+    }
     else if($("#button").html()=="-" && $("#button2").html()=="+") {
       $("#onlineDiv").slideToggle();
       $("#offlineDiv").slideToggle();
       $("#button2").html("-");
       $("#button").html("+");
     }
-    
+
   });
 
 });
